@@ -12,7 +12,8 @@ void setup() {
   imageMode(CENTER);
   frameRate(30);
 
-  selectInput("select image", "fileSelected");
+  File def = new File(sketchPath("../images/light-emerald.png"));
+  selectInput("Select image", "fileSelected", def);
 
   for (int i = 0; i < particles.length; i++) {
     particles[i] = new Particle();
