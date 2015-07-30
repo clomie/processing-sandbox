@@ -83,12 +83,12 @@ class Particle {
     float unitZ = random(-1, 1);
     float sinT = sqrt(1 - sq(unitZ));
 
-    float r = pow(random(1), 1.0/3.0);
-    float RAD = width;
+    float unitR = pow(random(1), 1.0/3.0);
+    float r = width;
 
-    x = RAD * r * sinT * cos(radP);
-    y = RAD * r * sinT * sin(radP);
-    z = RAD * r * unitZ;
+    x = r * unitR * sinT * cos(radP);
+    y = r * unitR * sinT * sin(radP);
+    z = r * unitR * unitZ;
   }
 
   void render(float[] rotation) {
