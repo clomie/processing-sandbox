@@ -1,38 +1,39 @@
-import java.util.*; //<>//
+import java.util.*;
 import peasy.*;
 
 private PeasyCam cam;
 
 private List<PImage> images = new ArrayList<PImage>();
-private Particle[] particles = new Particle[2000];
+private Particle[] particles = new Particle[1000];
 
 private boolean record = false;
 
 void setup() {
   size(960, 540, P3D);
+
   hint(DISABLE_DEPTH_TEST);
   blendMode(SCREEN);
-  imageMode(CENTER);
   frameRate(30);
-
-  for (Colors c : Colors.values()) {
-    images.add(createLight(c));
-  }
 
   cam = new PeasyCam(this, width/2);
   cam.setMaximumDistance(width);
 
+  imageMode(CENTER);
+  for (Colors c : Colors.values ()) {
+    images.add(createLight(c));
+  }
+
   for (int i = 0; i < particles.length; i++) {
-    particles[i] = new Particle();
+    PImage image = images.get(i % images.size());
+    particles[i] = new Particle(image);
   }
 }
 
 private PImage createLight(Colors colors) {
-
   int side = 150;
   PImage img = createImage(side, side, RGB);
 
-  int center = side / 2;
+  float center = side / 2.0;
 
   for (int y = 0; y < side; y++) {
     for (int x = 0; x < side; x++) {
@@ -47,10 +48,6 @@ private PImage createLight(Colors colors) {
 
 void draw() {
 
-  if (frameCount % 20 == 0) {
-    println(frameRate);
-  }
-
   background(0);
   translate(width/2, height/2, 0);
 
@@ -58,8 +55,7 @@ void draw() {
   cam.rotateY(radians(0.25));
 
   float[] rotations = cam.getRotations();
-
-  for (Particle p : particles) { //<>//
+  for (Particle p : particles) {
     p.render(rotations);
   }
 
@@ -76,12 +72,11 @@ void keyPressed() {
 
 class Particle {
 
+  private final PImage light;
+  private final float x, y, z;
 
-  PImage light;
-  float x, y, z;
-
-  Particle() {
-    light = images.get(floor(random(images.size())));
+  Particle(PImage light) {
+    this.light = light;
 
     float radP = radians(random(360));
 
@@ -106,3 +101,4 @@ class Particle {
     popMatrix();
   }
 }
+
