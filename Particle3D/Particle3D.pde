@@ -2,8 +2,6 @@ import java.util.*;
 import peasy.*;
 
 private PeasyCam cam;
-
-private List<PImage> images = new ArrayList<PImage>();
 private Particle[] particles = new Particle[1000];
 
 private boolean record = false;
@@ -13,12 +11,13 @@ void setup() {
 
   hint(DISABLE_DEPTH_TEST);
   blendMode(SCREEN);
+  imageMode(CENTER);
   frameRate(30);
 
-  cam = new PeasyCam(this, width/2);
-  cam.setMaximumDistance(width);
+  cam = new PeasyCam(this, width);
+  cam.setMaximumDistance(width * 2);
 
-  imageMode(CENTER);
+  List<PImage> images = new ArrayList<PImage>();
   for (Colors c : Colors.values ()) {
     images.add(createLight(c));
   }
@@ -31,9 +30,8 @@ void setup() {
 
 private PImage createLight(Colors colors) {
   int side = 150;
-  PImage img = createImage(side, side, RGB);
-
   float center = side / 2.0;
+  PImage img = createImage(side, side, RGB);
 
   for (int y = 0; y < side; y++) {
     for (int x = 0; x < side; x++) {
