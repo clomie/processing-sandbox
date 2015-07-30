@@ -1,9 +1,10 @@
+import java.util.*;
 import peasy.*;
 
-private PImage img;
-private boolean selected;
+private String[] colors = {"blue", "cyan", "emerald", "green", "magenta", "orange", "purple", "red", "yellow"};
+private PImage[] images = new PImage[colors.length];
 
-private Particle[] particles = new Particle[500];
+private Particle[] particles = new Particle[1000];
 
 private PeasyCam cam;
 
@@ -12,14 +13,15 @@ private boolean record = false;
 void setup() {
   size(960, 540, P3D);
   hint(DISABLE_DEPTH_TEST);
-  blendMode(ADD);
+  blendMode(SCREEN);
   imageMode(CENTER);
   frameRate(30);
 
-  File def = new File(sketchPath("../images/light-emerald.png"));
-  selectInput("Select image", "fileSelected", def);
+  for (int i = 0; i < images.length; i++) {
+    images[i] = loadImage("../images/light2-" + colors[i] + ".png");
+  }
 
-  cam = new PeasyCam(this, 100);
+  cam = new PeasyCam(this, width/2);
   cam.setMaximumDistance(width/2);
 
   for (int i = 0; i < particles.length; i++) {
@@ -27,19 +29,7 @@ void setup() {
   }
 }
 
-void fileSelected(File selection) {
-  if (selection == null) {
-    exit();
-  } else {
-    img = loadImage(selection.toString());
-    selected = true;
-  }
-}
-
 void draw() {
-  if (!selected) {
-    return;
-  }
 
   background(0);
   translate(width/2, height/2, 0);
@@ -49,9 +39,7 @@ void draw() {
 
   float[] rotations = cam.getRotations();
 
-  // image(img, 0, 0, 400, 400);
   for (Particle p : particles) {
-    // p.update();
     p.render(rotations);
   }
 
@@ -63,49 +51,19 @@ void draw() {
 void keyPressed() {
   if (key == 's') {
     record = true;
-  } else if (key == 'r') {
-    selectInput("select image", "fileSelected");
   }
 }
 
 class Particle {
 
-  final float dx, dy;
-
-  float radius;
   float x, y, z;
-  float size;
+  int imageIndex;
 
   Particle() {
-    float angle = radians(random(360));
-    dx = cos(angle);
-    dy = sin(angle);
-    init(random(width));
-  }
-
-  void init(float r) {
-    radius = r;
-    x = random(-height/2, height/2);
-    y = random(-height/2, height/2);
-    z = random(-height/2, height/2);
-    size = random(150);
-  }
-
-  void update() {
-    if (isDead()) {
-      init(0);
-    } else {
-      radius += 10;
-      x = radius * dx;
-      y = radius * dy;
-      size -= 2;
-    }
-  }
-
-  boolean isDead() {
-    return (size <= 0) ||
-      x < -(width+size)  || (width+size) < x ||
-      y < -(height+size) || (height+size) < y;
+    x = random(-width/2, width/2);
+    y = random(-width/2, width/2);
+    z = random(-width/2, width/2);
+    imageIndex = (int)random(images.length);
   }
 
   void render(float[] rotation) {
@@ -114,7 +72,7 @@ class Particle {
     rotateX(rotation[0]);
     rotateY(rotation[1]);
     rotateZ(rotation[2]);
-    image(img, 0, 0);
+    image(images[imageIndex], 0, 0);
     popMatrix();
   }
 }
