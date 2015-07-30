@@ -29,4 +29,3 @@ enum Colors {
     return Math.max(0, Math.min(color, 255));
   }
 }
-

@@ -1,14 +1,10 @@
-
-private static final float SOURCE_RED   = 256 * 8;
-private static final float SOURCE_GREEN = 256 * 4;
-private static final float SOURCE_BLUE  = 256 * 4;
-
 void setup() {
   size(60, 60);
   background(0);
 
-  for (Colors c : Colors.values ()) {
+  for (Colors c : Colors.values()) {
     create(c);
+    save("../images/light-" + c.name().toLowerCase() + ".png");
   }
 
   exit();
@@ -26,7 +22,4 @@ void create(Colors colors) {
     }
   }
   updatePixels();
-
-  save("../images/light-" + colors.name().toLowerCase() + ".png");
 }
-
