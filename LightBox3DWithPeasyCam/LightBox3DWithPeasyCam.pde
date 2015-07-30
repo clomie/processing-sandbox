@@ -19,7 +19,8 @@ void setup() {
   File def = new File(sketchPath("../images/light-emerald.png"));
   selectInput("Select image", "fileSelected", def);
 
-  cam = new PeasyCam(this, width/2, height/2, -width/2, width/2);
+  cam = new PeasyCam(this, 100);
+  cam.setMaximumDistance(width/2);
 
   for (int i = 0; i < particles.length; i++) {
     particles[i] = new Particle();
@@ -42,6 +43,9 @@ void draw() {
 
   background(0);
   translate(width/2, height/2, 0);
+
+  cam.rotateX(radians(0.25));
+  cam.rotateY(radians(0.25));
 
   float[] rotations = cam.getRotations();
 
@@ -110,7 +114,7 @@ class Particle {
     rotateX(rotation[0]);
     rotateY(rotation[1]);
     rotateZ(rotation[2]);
-    image(img, 0, 0, size, size);
+    image(img, 0, 0);
     popMatrix();
   }
 }
