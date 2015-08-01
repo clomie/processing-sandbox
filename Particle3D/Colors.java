@@ -9,7 +9,8 @@ public enum Colors {
   SKY(4, 6, 8), 
   BLUE(4, 4, 8), 
   PURPLE(6, 4, 8), 
-  MAGENTA(8, 4, 8);
+  MAGENTA(8, 4, 8), 
+  PINK(8, 4, 6);
 
   private static final float SUPPRESS = 3;
   private float r, g, b;
