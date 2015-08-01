@@ -9,7 +9,7 @@ enum Colors {
   CYAN(4, 8, 8), 
   EMERALD(4, 8, 6);
 
-  private static final float SUPPRESS = 3;
+  private static final float SUPPRESS = 16;
   private float r, g, b;
 
   private Colors(float r, float g, float b) {
