@@ -4,7 +4,7 @@ import peasy.*;
 private PeasyCam cam;
 private Particle[] particles = new Particle[1000];
 
-private boolean record = false;
+private boolean record;
 
 void setup() {
   size(960, 540, P3D);
@@ -49,8 +49,8 @@ void draw() {
   background(0);
   translate(width/2, height/2, 0);
 
-  cam.rotateX(radians(0.25));
-  cam.rotateY(radians(0.25));
+  cam.rotateX(-radians(0.5));
+  cam.rotateY(-radians(0.5));
 
   float[] rotations = cam.getRotations();
   for (Particle p : particles) {
