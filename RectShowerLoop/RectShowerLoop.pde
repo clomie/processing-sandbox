@@ -2,12 +2,13 @@
 private static final int MAX_POS = 400;
 
 PShape square;
-Square[] squares = new Square[500];
+Square[] squares = new Square[1000];
 
 void setup() {
   size(960, 540, P3D);
   blendMode(ADD);
   shapeMode(CENTER);
+  frameRate(30);
 
   square = createShape(RECT, 0, 0, 20, 20);
   square.setFill(color(255));
@@ -24,7 +25,7 @@ void draw() {
 
   translate(width/2, height/2, 0);
 
-  float angle = (frameCount * 0.5) % 360;
+  float angle = frameCount % 360;
   rotateZ(radians(angle));
 
   for (Square s : squares) {
@@ -40,8 +41,8 @@ class Square {
   private color rectColor;
 
   Square() {
-    vx = random(-2, 5);
-    vz = random(3, 10);
+    vx = random(-5, 10);
+    vz = random(5, 20);
     init(0);
   }
 
