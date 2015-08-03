@@ -4,9 +4,9 @@ import java.awt.Color;
 import java.util.*;
 
 PImage light;
-private List<Light> lights = new ArrayList<Light>();
-
 PeasyCam cam;
+
+private List<Light> lights = new ArrayList<Light>();
 
 void setup() {
   size(960, 540, P3D);
@@ -15,11 +15,13 @@ void setup() {
   imageMode(CENTER);
   frameRate(30);
 
+  cam = new PeasyCam(this, width/2, 0, 0, 500);
+  cam.setMinimumDistance(300);
+  cam.setMaximumDistance(2000);
+
   light = createLight();
 
-  cam = new PeasyCam(this, 100);
-
-  int range = 10000;
+  int range = 5000;
   for (int x = -range; x < range; x += 5) {
     lights.add(new Light(x, -120));
     lights.add(new Light(x, 120));
@@ -47,14 +49,9 @@ float calc(float a, float distance) {
 }
 
 void draw() {
-
   background(0);
 
-  translate(width / 2, height / 2);
-
-  float angle = frameCount % 360;
-  color col = hsbAsRgb(angle, 75, 100);
-
+  color col = hsbAsRgb(frameCount % 360, 75, 100);
   for (Light l : lights) {
     l.update();
     l.render(col);
@@ -62,7 +59,7 @@ void draw() {
 }
 
 // colorMode(HSB, 360, 100, 100)
-color hsbAsRgb(float h, float s, float b) {
+private color hsbAsRgb(float h, float s, float b) {
   float hue = 1.0 / 360 * h;
   float sat = s / 100;
   float bri = b / 100;
