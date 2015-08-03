@@ -1,18 +1,25 @@
+import peasy.*;
+
 import java.awt.Color;
 import java.util.*;
 
 PImage light;
 private List<Light> lights = new ArrayList<Light>();
 
+PeasyCam cam;
+
 void setup() {
-  size(960, 540, P2D);
+  size(960, 540, P3D);
+  hint(DISABLE_DEPTH_TEST);
   blendMode(ADD);
   imageMode(CENTER);
   frameRate(30);
 
   light = createLight();
 
-  int range = width / 2 + 60;
+  cam = new PeasyCam(this, 100);
+
+  int range = 10000;
   for (int x = -range; x < range; x += 5) {
     lights.add(new Light(x, -120));
     lights.add(new Light(x, 120));
@@ -46,9 +53,8 @@ void draw() {
   translate(width / 2, height / 2);
 
   float angle = frameCount % 360;
-  // rotate(radians(angle));
-
   color col = hsbAsRgb(angle, 75, 100);
+
   for (Light l : lights) {
     l.update();
     l.render(col);
