@@ -2,12 +2,16 @@
 private static final int MAX_POS = 400;
 
 PShape square;
-Square[] squares = new Square[1000];
+Square[] squares = new Square[2000];
+
+boolean record;
 
 void setup() {
   size(960, 540, P3D);
   blendMode(ADD);
   shapeMode(CENTER);
+  smooth(32);
+  colorMode(HSB, 360, 100, 100, 256);
   frameRate(30);
 
   square = createShape(RECT, 0, 0, 20, 20);
@@ -20,17 +24,29 @@ void setup() {
 }
 
 void draw() {
-  background(0);
-  colorMode(HSB, 360, 100, 100, 256);
-
-  translate(width/2, height/2, 0);
-
   float angle = frameCount % 360;
+
+  background(angle, 100, 5);
+  translate(width/2, height/2, 0);
   rotateZ(radians(angle));
 
   for (Square s : squares) {
     s.update(angle);
     s.render();
+  }
+
+  if (frameCount % 10 == 0) {
+    println(frameRate);
+  }
+
+  if (record) {
+    saveFrame("frame/frame-######.tif");
+  }
+}
+
+void keyPressed() {
+  if (key == 'r') {
+    record = true;
   }
 }
 

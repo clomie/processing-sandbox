@@ -5,12 +5,17 @@ private List<Strobe> strobes = new ArrayList<Strobe>();
 
 private int lightIndex = 0;
 
-private boolean record;
+// 120bpm -> 2.0 beat/sec (30fps : 15frame/beat)
+// 150bpm -> 2.5 beat/sec (30fps : 12frame/beat)
+// 180bpm -> 3.0 beat/sec (30fps : 10frame/beat)
+private int frameParBeat = 10;
+private int bpm = floor((30.0 / frameParBeat) * 60.0);
 
 void setup() {
   size(960, 540, P2D);
   blendMode(ADD);
   imageMode(CENTER);
+
   frameRate(30);
 
   for (Colors c : Colors.values ()) {
@@ -44,7 +49,7 @@ void draw() {
 
   background(0);
 
-  if (frameCount % 10 == 0) {
+  if (frameCount % frameParBeat == 0) {
     for (Strobe s : selectStrobes ()) {
       s.flash(lightIndex);
     }
@@ -55,9 +60,7 @@ void draw() {
     s.render();
   }
 
-  if (record) {
-    saveFrame("frame/frame-######.tif");
-  }
+  saveFrame("frame" + bpm + "/frame-######.tif");
 }
 
 private List<Strobe> selectStrobes() {
@@ -76,12 +79,6 @@ private List<Strobe> selectStrobes() {
 
   int size = min(remains, floor(random(2, 8)));
   return list.subList(0, size);
-}
-
-void keyPressed() {
-  if (key == 's') {
-    record = true;
-  }
 }
 
 class Strobe {
@@ -107,12 +104,10 @@ class Strobe {
   }
 
   void render() {
-    alpha -= 10;
-    if (alpha > 0) {
-      // Apply transparency without changing color
-      tint(255, alpha);
-      image(images.get(index), x, y);
-    }
+    // Apply transparency without changing color
+    tint(255, alpha);
+    image(images.get(index), x, y);
+    alpha -= 12;
   }
 }
 
